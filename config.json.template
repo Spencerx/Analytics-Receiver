@@ -1,0 +1,25 @@
+{
+  "dynamodb": {
+    "tables": {
+      "instances": "home-assistant-analytics",
+      "counts": "home-assistant-analytics-counts"
+    }
+  },
+  "version": {
+    "version": "0.31",
+    "release-notes": "https://home-assistant.io/blog/2016/10/22/flash-briefing-updater-hacktoberfest/"
+  },
+  "keen": {
+    "project": "",
+    "write_key": "",
+    "event_name": ""
+  },
+  "freegeoip_source": "freegeoip.net",
+  "deploy_options": {
+    "arn": "arn:aws:lambda:us-west-2:XXXXXXXXXXXX:function:HomeAssistantAnalyticsReceiver",
+    "options": {
+      "profile": "personaliam",
+      "region": "us-west-2"
+    }
+  }
+}

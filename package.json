@@ -1,0 +1,26 @@
+{
+  "name": "home-assistant-analytics-receiver",
+  "version": "0.0.1",
+  "description": "An AWS Lambda function to receive a payload from the Home Assistant updater and store it to DynamoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/home-assistant/Home-Assistant-Analytics-Receiver.git"
+  },
+  "author": "Robbie Trencheny <me@robbiet.us>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/home-assistant/Home-Assistant-Analytics-Receiver/issues"
+  },
+  "homepage": "https://github.com/home-assistant/Home-Assistant-Analytics-Receiver#readme",
+  "dependencies": {
+    "async": "^1.5.2"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-aws-lambda": "^0.13.0"
+  }
+}

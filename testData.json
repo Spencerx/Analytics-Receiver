@@ -1,0 +1,43 @@
+{
+  "body-json": {
+    "arch": "x86_64",
+    "docker": false,
+    "os_name": "Darwin",
+    "os_version": "10.12",
+    "python_version": "3.5.1",
+    "timezone": "America/Los_Angeles",
+    "uuid": "286e1f1d91974170ad5b65ffeaeedaf4",
+    "version": "0.32.0.dev0",
+    "virtualenv": true
+  },
+  "context": {
+    "source-ip": "127.0.0.1",
+    "test_mode": true,
+    "user-agent": "python-requests/2.11.1"
+  },
+  "testDoc": {
+    "arch": "x86_64",
+    "geo_city": "Oakland",
+    "geo_zip_code": "94602",
+    "geo_longitude": -122.2124,
+    "virtualenv": true,
+    "geo_latitude": 37.8047,
+    "version": "0.32.0.dev0",
+    "geo_region_code": "CA",
+    "geo_country_code": "US",
+    "first_seen_datetime": "2016-10-22T21:29:22.693Z",
+    "distribution": null,
+    "python_version": "3.5.1",
+    "os_version": "10.12",
+    "geo_country_name": "United States",
+    "user_agent": "python-requests/2.11.1",
+    "os_name": "Darwin",
+    "docker": false,
+    "geo_region_name": "California",
+    "time_zone": "America/Los_Angeles",
+    "instance-id": "286e1f1d91974170ad5b65ffeaeedaf4",
+    "last_seen_datetime": "2016-10-24T03:25:04.909Z",
+    "geo_time_zone": "America/Los_Angeles",
+    "geo_metro_code": 807
+  }
+}
