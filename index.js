@@ -161,12 +161,13 @@ function publishEventToKeenIO(params, callback){
     'last_seen_datetime': params.last_seen_datetime,
     'system_info': {
       'arch': params.arch,
-      'docker': params.docker,
       'distribution': params.distribution,
+      'docker': params.docker,
       'os_name': params.os_name,
       'os_version': params.os_version,
       'python_version': params.python_version,
-      'virtualenv': params.virtualenv,
+      'user_agent': params.user_agent,
+      'virtualenv': params.virtualenv
     },
     'ip_geo_info': {
       'city': params['geo_city'],
