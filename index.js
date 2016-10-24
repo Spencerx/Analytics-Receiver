@@ -181,6 +181,7 @@ function publishEventToKeenIO(params, callback){
       'zip_code': params['geo_zip_code']
     },
     'homeassistant': {
+      'dev': params.dev,
       'instance-id': params['instance-id'],
       'time_zone': params.time_zone,
       'version': params.version
