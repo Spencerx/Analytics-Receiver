@@ -58,6 +58,7 @@ exports.handler = function (event, context, callback) {
         }
         var params = {
           'arch': body.arch,
+          'dev': body.dev || false,
           'distribution': body.distribution || null,
           'docker': body.docker || false,
           'instance-id': body.uuid,
