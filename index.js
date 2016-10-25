@@ -16,21 +16,28 @@ exports.handler = function (event, context, callback) {
   todaysEndDate.setUTCHours(0,0,0,0);
   todaysEndDate.setDate(todaysEndDate.getDate() + 1);
   if (Object.keys(body).length === 0) {
-    var params = {
-      TableName: config.dynamodb.tables.counts,
-      Key: { 'start_date': todaysStartDate.toISOString(), 'end_date': todaysEndDate.toISOString() },
-      UpdateExpression: 'ADD opt_out_count :updateVal, total_request_count :totalVal SET start_epoch = :startEpoch, end_epoch = :endEpoch',
-      ExpressionAttributeValues: {
-        ':updateVal': 1,
-        ':totalVal': 1,
-        ':startEpoch': (todaysStartDate.getTime() / 1000),
-        ':endEpoch': (todaysEndDate.getTime() / 1000)
+    async.parallel([
+      function(cb){
+        var params = {
+          TableName: config.dynamodb.tables.counts,
+          Key: { 'start_date': todaysStartDate.toISOString(), 'end_date': todaysEndDate.toISOString() },
+          UpdateExpression: 'ADD opt_out_count :updateVal, total_request_count :totalVal SET start_epoch = :startEpoch, end_epoch = :endEpoch',
+          ExpressionAttributeValues: {
+            ':updateVal': 1,
+            ':totalVal': 1,
+            ':startEpoch': (todaysStartDate.getTime() / 1000),
+            ':endEpoch': (todaysEndDate.getTime() / 1000)
+          },
+          ReturnValues:'NONE'
+        };
+        docClient.update(params, cb);
       },
-      ReturnValues:'NONE'
-    };
-    docClient.update(params, function(updateErr, updateData) {
-      if(updateErr){
-        console.error('Error when updating opt out count:', updateErr);
+      function(cb){
+        publishOptOutToKeenIO(cb);
+      }
+    ], function(err, objs){
+      if(err){
+        console.error('Error when updating opt out count:', err);
       }
       callback(null, config.version);
     });
@@ -102,7 +109,7 @@ exports.handler = function (event, context, callback) {
             docClient.put({TableName: config.dynamodb.tables.instances, Item: params}, cbb);
           },
           function(cbb){
-            publishEventToKeenIO(params, cbb);
+            publishUpdateCheckEventToKeenIO(params, cbb);
           },
           function(cbb){
             var updateParameter = (is_new_instance) ? 'new_instance_count' : 'existing_instance_count';
@@ -155,7 +162,7 @@ function getGeoIP(ipAddress, callback){
   });
 }
 
-function publishEventToKeenIO(params, callback){
+function publishUpdateCheckEventToKeenIO(params, callback){
   var keen_params = {
     'first_seen_datetime': params.first_seen_datetime,
     'last_seen_datetime': params.last_seen_datetime,
@@ -205,29 +212,33 @@ function publishEventToKeenIO(params, callback){
       ]
     }
   };
+  return publishToKeenIO(config.keen.update_check_event_name, keen_params, callback);
+}
+
+function publishOptOutToKeenIO(callback){
+  return publishToKeenIO(config.keen.opt_out_event_name, {}, callback);
+}
+
+function publishToKeenIO(event_name, params, callback){
   var req = https.request({
     hostname: 'api.keen.io',
     port: 443,
-    path: '/3.0/projects/'+config.keen.project+'/events/'+config.keen.event_name,
+    path: '/3.0/projects/'+config.keen.project+'/events/'+event_name,
     method: 'POST',
     headers: {
       'Authorization': config.keen.write_key,
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(JSON.stringify(keen_params))
+      'Content-Length': Buffer.byteLength(JSON.stringify(params))
     }
   }, function(res) {
     res.on('data', function(d) {
       callback(null, JSON.parse(d));
     });
   });
-  req.end(JSON.stringify(keen_params));
+  req.end(JSON.stringify(params));
 
   req.on('error', function(e){
     console.error('Keen.io error:', e);
     callback(e, null);
   });
-}
-
-function addZ(n){
-  return n<10? '0'+n:''+n;
 }

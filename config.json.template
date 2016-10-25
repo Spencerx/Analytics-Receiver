@@ -12,7 +12,8 @@
   "keen": {
     "project": "",
     "write_key": "",
-    "event_name": ""
+    "update_check_event_name": "",
+    "opt_out_event_name": ""
   },
   "freegeoip_source": "freegeoip.net",
   "deploy_options": {
